@@ -5,10 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
@@ -43,7 +40,7 @@ public class CreateAlarmFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_createalarm, container, false);
+        View view = inflater.inflate(R.layout.fragment_alarmcreation, container, false);
 
         ButterKnife.bind(this, view);
 

@@ -13,10 +13,8 @@ import pl.wkjj.budzik.R;
 import pl.wkjj.budzik.Model.Alarm;
 
 public class AlarmViewHolder extends RecyclerView.ViewHolder {
-    private TextView alarmTime;
-    private ImageView alarmRecurring;
-    private TextView alarmRecurringDays;
-    private TextView alarmTitle;
+    private TextView alarmInfo;
+
 
     Switch alarmStarted;
 
@@ -25,9 +23,9 @@ public class AlarmViewHolder extends RecyclerView.ViewHolder {
     public AlarmViewHolder(@NonNull View itemView, OnToggleAlarmListener listener) {
         super(itemView);
 
-        alarmTime = itemView.findViewById(R.id.item_alarm_time);
+        alarmInfo = itemView.findViewById(R.id.item_alarm_info);
         alarmStarted = itemView.findViewById(R.id.item_alarm_started);
-        alarmTitle = itemView.findViewById(R.id.item_alarm_title);
+
 
         this.listener = listener;
     }
@@ -35,14 +33,14 @@ public class AlarmViewHolder extends RecyclerView.ViewHolder {
     public void bind(Alarm alarm) {
         String alarmText = String.format("%02d:%02d", alarm.getHour(), alarm.getMinute());
 
-        alarmTime.setText(alarmText);
+
         alarmStarted.setChecked(alarm.isStarted());
 
 
         if (alarm.getTitle().length() != 0) {
-            alarmTitle.setText(alarm.getTitle());
+            alarmInfo.setText(alarmText.concat((", " + alarm.getTitle())));
         } else {
-            alarmTitle.setText("Alarm");
+            alarmInfo.setText(alarmText.concat(", Alarm"));
         }
 
 
