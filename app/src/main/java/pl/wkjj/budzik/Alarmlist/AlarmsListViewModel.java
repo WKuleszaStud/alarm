@@ -29,4 +29,9 @@ public class AlarmsListViewModel extends AndroidViewModel {
     public LiveData<List<Alarm>> getAlarmsLiveData() {
         return alarmsLiveData;
     }
+
+    public void removeAll() {
+        alarmRepository.deleteAll();
+//        alarmsLiveData = alarmRepository.getAlarmsLiveData();
+    }
 }

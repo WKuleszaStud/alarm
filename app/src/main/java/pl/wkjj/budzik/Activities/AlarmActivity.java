@@ -41,7 +41,9 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
     TextView mission;
 
     private SensorManager sensorManager;
-    private int randomNum = ThreadLocalRandom.current().nextInt(1, 2);
+    private final int MISSIONS_COUNT = 5;
+    private final int MIN_MISSION_NUMBER = 5;
+    private int randomNum = ThreadLocalRandom.current().nextInt(MISSIONS_COUNT - MIN_MISSION_NUMBER) + MIN_MISSION_NUMBER;
     private float[] gravity = new float[3];
     private float[] geomag = new float[3];
 
@@ -51,10 +53,11 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
         setContentView(R.layout.activity_alarm);
 
         Map<Integer, String> missions = new HashMap<Integer, String>();
-        missions.put(1, "Point me at north!");
-        missions.put(2, "Shake me!");
-        missions.put(3, "Touch proximity sensor!");
-        missions.put(4, "Take me into oblivion!");
+        missions.put(1, "Skieruj mnie na północ!");
+        missions.put(2, "Potrząśnij mną!");
+        missions.put(3, "Ukryj mój czujnik zbliżeniowy!");
+        missions.put(4, "Niech nastanie ciemność!");
+        missions.put(5, "Pora pożegnać się ze światem... upuść mnie (albo podrzuć!");
 
         ButterKnife.bind(this);
 
@@ -63,8 +66,7 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         Sensor accelometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         Sensor magno = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        Sensor magno2 = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
-        Sensor orientation = sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION);
+//        Sensor magno2 = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
 
         Sensor proxy = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         Sensor light = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
@@ -72,7 +74,7 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
         sensorManager.registerListener(AlarmActivity.this, magno, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(AlarmActivity.this, proxy, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(AlarmActivity.this, light, SensorManager.SENSOR_DELAY_NORMAL);
-        sensorManager.registerListener(AlarmActivity.this, magno2, SensorManager.SENSOR_DELAY_NORMAL);
+//        sensorManager.registerListener(AlarmActivity.this, magno2, SensorManager.SENSOR_DELAY_NORMAL);
 
 
         dismiss.setOnClickListener(new View.OnClickListener() {
@@ -125,11 +127,6 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
                 break;
         }
 
-//        if (sensorType == Sensor.TYPE_MAGNETIC_FIELD && randomNum == 1) {
-//            if (event.values[0] > 40) {
-//                finishAlarm();
-//            }
-//        } else
         if (sensorType == Sensor.TYPE_ACCELEROMETER && randomNum == 2) {
             if (event.values[0] > 15) {
                 finishAlarm();
@@ -142,32 +139,25 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
             if (event.values[0] < 4) {
                 finishAlarm();
             }
-        }
-
-        // Point to north!
-        if (randomNum == 1) {
-            if(sensorType == Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR) {
-
+        } else if (sensorType == Sensor.TYPE_ACCELEROMETER && randomNum == 5) {
+            double freeFallThreshold = 1;
+            if (Math.abs(event.values[0]) <= freeFallThreshold && Math.abs(event.values[1]) <= freeFallThreshold && Math.abs(event.values[2]) <= freeFallThreshold) {
+                finishAlarm();
             }
+        } else if (randomNum == 1) {
+            // Point to north!
             if (gravity != null && geomag != null) {
                 float[] inR = new float[16];
                 float[] orientVals = new float[3];
                 SensorManager.getOrientation(inR, orientVals);
-//                double azimuth = Math.toDegrees(orientVals[0]);
-//                double pitch = Math.toDegrees(orientVals[1]);
-//                double roll = Math.toDegrees(orientVals[2]);
-                double azimuth = formatDegres(orientVals[0]);
-                double pitch = formatDegres(orientVals[1]);
-                double roll = formatDegres(orientVals[2]);
-                mission.setText(String.format("%.3f %.3f %.3f", orientVals[0], orientVals[1], orientVals[2]));
-//                if(Math.abs(orientVals[0]) <= 15)
-//                    finishAlarm();
+                double azimuth = Math.toDegrees(orientVals[0]);
+                double pitch = Math.toDegrees(orientVals[1]);
+                double roll = Math.toDegrees(orientVals[2]);
+                // Pointing North or near to it
+                if (Math.abs(azimuth) <= 15)
+                    finishAlarm();
             }
         }
-    }
-
-    private double formatDegres(double val) {
-        return (val + 360.0) % 360.0;
     }
 
     @Override

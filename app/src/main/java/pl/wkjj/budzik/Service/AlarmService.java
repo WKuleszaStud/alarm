@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.IBinder;
+import android.os.VibrationEffect;
 import android.os.Vibrator;
 
 import androidx.annotation.Nullable;
@@ -48,12 +49,10 @@ public class AlarmService extends Service {
 
         mediaPlayer.start();
 
-        long[] pattern = { 0, 100, 1000 };
-        int repeat = 1;
-        vibrator.vibrate(pattern, 0);
-//        VibrationEffect vb = VibrationEffect.createWaveform(pattern, repeat);
-//        vibrator.vibrate(100);
-//        vibrator.vibrate(vb);
+        long[] pattern = { 0, 100, 500, 100, 500, 100, 500, 100, 500, 100, 500 };
+        // Run vibration pattern exactly once
+        VibrationEffect vb = VibrationEffect.createWaveform(pattern, -1);
+        vibrator.vibrate(vb);
 
         startForeground(1, notification);
 
