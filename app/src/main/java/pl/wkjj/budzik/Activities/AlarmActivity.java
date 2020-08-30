@@ -9,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -42,8 +43,7 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
 
     private SensorManager sensorManager;
     private final int MISSIONS_COUNT = 5;
-    private final int MIN_MISSION_NUMBER = 5;
-    private int randomNum = ThreadLocalRandom.current().nextInt(MISSIONS_COUNT - MIN_MISSION_NUMBER) + MIN_MISSION_NUMBER;
+    private int randomNum = ThreadLocalRandom.current().nextInt(5, MISSIONS_COUNT + 1);
     private float[] gravity = new float[3];
     private float[] geomag = new float[3];
 
@@ -57,7 +57,7 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
         missions.put(2, "Potrząśnij mną!");
         missions.put(3, "Ukryj mój czujnik zbliżeniowy!");
         missions.put(4, "Niech nastanie ciemność!");
-        missions.put(5, "Pora pożegnać się ze światem... upuść mnie (albo podrzuć!");
+        missions.put(5, "Pora pożegnać się ze światem... upuść mnie (albo podrzuć)!");
 
         ButterKnife.bind(this);
 
@@ -66,7 +66,6 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         Sensor accelometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         Sensor magno = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-//        Sensor magno2 = sensorManager.getDefaultSensor(Sensor.TYPE_GEOMAGNETIC_ROTATION_VECTOR);
 
         Sensor proxy = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
         Sensor light = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
@@ -74,7 +73,6 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
         sensorManager.registerListener(AlarmActivity.this, magno, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(AlarmActivity.this, proxy, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(AlarmActivity.this, light, SensorManager.SENSOR_DELAY_NORMAL);
-//        sensorManager.registerListener(AlarmActivity.this, magno2, SensorManager.SENSOR_DELAY_NORMAL);
 
 
         dismiss.setOnClickListener(new View.OnClickListener() {
@@ -141,6 +139,7 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
             }
         } else if (sensorType == Sensor.TYPE_ACCELEROMETER && randomNum == 5) {
             double freeFallThreshold = 1;
+            Log.w("myApp", String.format("%.2f %.2f %.2f numbers ", event.values[0], event.values[1], event.values[2]));
             if (Math.abs(event.values[0]) <= freeFallThreshold && Math.abs(event.values[1]) <= freeFallThreshold && Math.abs(event.values[2]) <= freeFallThreshold) {
                 finishAlarm();
             }
