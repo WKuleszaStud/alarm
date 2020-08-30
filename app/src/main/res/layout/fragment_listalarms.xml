@@ -14,16 +14,18 @@
             android:id="@+id/fragment_listalarms_myAlarms"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="My Alarms"
+            android:text="Twoje alarmy"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fragment_listalarms_recylerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/fragment_listalarms_myAlarms">
+            android:layout_width="404dp"
+            android:layout_height="648dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/fragment_listalarms_addAlarm"
+            tools:layout_editor_absoluteX="3dp">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -32,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:text="Add Alarm"
+            android:text="Dodaj budzik"
             app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

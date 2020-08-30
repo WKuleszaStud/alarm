@@ -11,21 +11,16 @@ import pl.wkjj.budzik.Service.RescheduleAlarmsService;
 
 import java.util.Calendar;
 
-public class AlarmBroadcastReceiver extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
 
     public static final String TITLE = "TITLE";
 
     @Override
     public void onReceive(Context context, Intent intent) {
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            String toastText = String.format("Alarm Reboot");
-            Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
             startRescheduleAlarmsService(context);
         } else {
-            String toastText = String.format("Alarm Received");
-            Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
             startAlarmService(context, intent);
-
         }
     }
 

@@ -69,10 +69,9 @@ public class AlarmsListFragment extends Fragment implements OnToggleAlarmListene
     public void onToggle(Alarm alarm) {
         if (alarm.isStarted()) {
             alarm.cancelAlarm(getContext());
-            alarmsListViewModel.update(alarm);
         } else {
             alarm.schedule(getContext());
-            alarmsListViewModel.update(alarm);
         }
+        alarmsListViewModel.update(alarm);
     }
 }

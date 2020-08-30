@@ -8,10 +8,10 @@ import androidx.lifecycle.AndroidViewModel;
 import pl.wkjj.budzik.Model.Alarm;
 import pl.wkjj.budzik.Dao.AlarmRepository;
 
-public class CreateAlarmViewModel extends AndroidViewModel {
+public class CreateAlarmView extends AndroidViewModel {
     private AlarmRepository alarmRepository;
 
-    public CreateAlarmViewModel(@NonNull Application application) {
+    public CreateAlarmView(@NonNull Application application) {
         super(application);
 
         alarmRepository = new AlarmRepository(application);

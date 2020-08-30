@@ -27,14 +27,13 @@ public class CreateAlarmFragment extends Fragment {
     @BindView(R.id.fragment_createalarm_title) EditText title;
     @BindView(R.id.fragment_createalarm_scheduleAlarm) Button scheduleAlarm;
 
-
-    private CreateAlarmViewModel createAlarmViewModel;
+    private CreateAlarmView createAlarmView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        createAlarmViewModel = ViewModelProviders.of(this).get(CreateAlarmViewModel.class);
+        createAlarmView = ViewModelProviders.of(this).get(CreateAlarmView.class);
     }
 
     @Nullable
@@ -43,9 +42,6 @@ public class CreateAlarmFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_alarmcreation, container, false);
 
         ButterKnife.bind(this, view);
-
-
-
         scheduleAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -69,7 +65,7 @@ public class CreateAlarmFragment extends Fragment {
                 true
         );
 
-        createAlarmViewModel.insert(alarm);
+        createAlarmView.insert(alarm);
 
         alarm.schedule(getContext());
     }

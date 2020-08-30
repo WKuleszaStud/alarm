@@ -11,12 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import pl.wkjj.budzik.Broadcast.AlarmBroadcastReceiver;
+import pl.wkjj.budzik.Broadcast.AlarmReceiver;
 
 import java.util.Calendar;
 
 
-import static pl.wkjj.budzik.Broadcast.AlarmBroadcastReceiver.TITLE;
+import static pl.wkjj.budzik.Broadcast.AlarmReceiver.TITLE;
 
 
 @Entity(tableName = "alarm_table")
@@ -83,7 +83,7 @@ public class Alarm {
     public void schedule(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+        Intent intent = new Intent(context, AlarmReceiver.class);
 
         intent.putExtra(TITLE, title);
 
@@ -104,7 +104,7 @@ public class Alarm {
 
         String toastText = null;
         try {
-            toastText = String.format("One Time Alarm %s scheduled for %s at %02d:%02d", title, nameOfDay(calendar.get(Calendar.DAY_OF_WEEK)), hour, minute, alarmId);
+            toastText = String.format("Ustawiono alarm %s na godzinę %02d:%02d", title, hour, minute);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -122,12 +122,12 @@ public class Alarm {
 
     public void cancelAlarm(Context context) {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+        Intent intent = new Intent(context, AlarmReceiver.class);
         PendingIntent alarmPendingIntent = PendingIntent.getBroadcast(context, alarmId, intent, 0);
         alarmManager.cancel(alarmPendingIntent);
         this.started = false;
 
-        String toastText = String.format("Alarm cancelled for %02d:%02d with id %d", hour, minute, alarmId);
+        String toastText = String.format("Alarm odwołany %02d:%02d", hour, minute);
         Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
         Log.i("cancel", toastText);
     }
@@ -143,25 +143,5 @@ public class Alarm {
 
     public void setCreated(long created) {
         this.created = created;
-    }
-
-    private String nameOfDay(int day) throws Exception {
-        switch (day) {
-            case Calendar.SUNDAY:
-                return "Sunday";
-            case Calendar.MONDAY:
-                return "Monday";
-            case Calendar.TUESDAY:
-                return "Tuesday";
-            case Calendar.WEDNESDAY:
-                return "Wednesday";
-            case Calendar.THURSDAY:
-                return "Thursday";
-            case Calendar.FRIDAY:
-                return "Friday";
-            case Calendar.SATURDAY:
-                return "Saturday";
-        }
-        throw new Exception("Could not locate day");
     }
 }

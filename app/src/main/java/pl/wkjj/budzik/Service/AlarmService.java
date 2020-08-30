@@ -16,7 +16,7 @@ import pl.wkjj.budzik.R;
 import pl.wkjj.budzik.Activities.AlarmActivity;
 
 import static pl.wkjj.budzik.Activities.App.CHANNEL_ID;
-import static pl.wkjj.budzik.Broadcast.AlarmBroadcastReceiver.TITLE;
+import static pl.wkjj.budzik.Broadcast.AlarmReceiver.TITLE;
 
 public class AlarmService extends Service {
     private MediaPlayer mediaPlayer;
@@ -30,7 +30,6 @@ public class AlarmService extends Service {
         mediaPlayer.setLooping(true);
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
     }
 
     @Override
@@ -38,11 +37,11 @@ public class AlarmService extends Service {
         Intent notificationIntent = new Intent(this, AlarmActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
-        String alarmTitle = String.format("%s Alarm", intent.getStringExtra(TITLE));
+        String alarmTitle = String.format("%s budzik", intent.getStringExtra(TITLE));
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle(alarmTitle)
-                .setContentText("Ring Ring .. Ring Ring")
+                .setContentText("Pora wstawać!")
                 .setSmallIcon(R.drawable.ic_alarm_black_24dp)
                 .setContentIntent(pendingIntent)
                 .build();
@@ -50,7 +49,11 @@ public class AlarmService extends Service {
         mediaPlayer.start();
 
         long[] pattern = { 0, 100, 1000 };
+        int repeat = 1;
         vibrator.vibrate(pattern, 0);
+//        VibrationEffect vb = VibrationEffect.createWaveform(pattern, repeat);
+//        vibrator.vibrate(100);
+//        vibrator.vibrate(vb);
 
         startForeground(1, notification);
 
