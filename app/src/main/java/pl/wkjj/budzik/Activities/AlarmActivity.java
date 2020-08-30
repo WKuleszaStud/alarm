@@ -43,7 +43,7 @@ public class AlarmActivity extends AppCompatActivity implements SensorEventListe
 
     private SensorManager sensorManager;
     private final int MISSIONS_COUNT = 5;
-    private int randomNum = ThreadLocalRandom.current().nextInt(5, MISSIONS_COUNT + 1);
+    private int randomNum = ThreadLocalRandom.current().nextInt(1, MISSIONS_COUNT + 1);
     private float[] gravity = new float[3];
     private float[] geomag = new float[3];
 
