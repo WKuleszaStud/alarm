@@ -1,4 +1,4 @@
-package pl.wkjj.budzik.Alarmcreation;
+package pl.wkjj.budzik.AlarmCreations;
 
 import android.app.Application;
 

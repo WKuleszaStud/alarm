@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/createAlarmFragment"
-        android:name="pl.wkjj.budzik.Alarmcreation.CreateAlarmFragment"
+        android:name="pl.wkjj.budzik.AlarmCreations.CreateAlarmFragment"
         android:label="CreateAlarmFragment" >
         <action
             android:id="@+id/action_createAlarmFragment_to_alarmsListFragment"
